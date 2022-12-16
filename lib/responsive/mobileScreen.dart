@@ -102,7 +102,9 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
             Explorer(),
             AddStories(),
             Stories(),
-            Profile()
+            Profile(
+              uid: FirebaseAuth.instance.currentUser!.uid,
+            )
           ],
         ));
   }

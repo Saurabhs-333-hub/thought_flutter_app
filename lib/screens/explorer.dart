@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:staggered_grid_view_flutter/rendering/sliver_staggered_grid.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';
+import 'package:thought/screens/profile.dart';
 import 'package:thought/utils/utils.dart';
 
 class Explorer extends StatefulWidget {
@@ -51,13 +52,20 @@ class _ExplorerState extends State<Explorer> {
                 return ListView.builder(
                   itemCount: (snapshot.data as dynamic).docs.length,
                   itemBuilder: (context, index) {
-                    return ListTile(
-                      leading: CircleAvatar(
-                        backgroundImage: NetworkImage((snapshot.data as dynamic)
-                            .docs[index]['profilePic']),
+                    return InkWell(
+                      onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => Profile(
+                            uid: (snapshot.data as dynamic).docs[index]['uid']),
+                      )),
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          backgroundImage: NetworkImage(
+                              (snapshot.data as dynamic).docs[index]
+                                  ['profilePic']),
+                        ),
+                        title: Text(
+                            (snapshot.data as dynamic).docs[index]['username']),
                       ),
-                      title: Text(
-                          (snapshot.data as dynamic).docs[index]['username']),
                     );
                   },
                 );
@@ -77,11 +85,11 @@ class _ExplorerState extends State<Explorer> {
                       borderRadius: BorderRadius.circular(40),
                       child: Image.network(
                           (snapshot.data! as dynamic).docs[index]['postUrl'],
-                          fit: BoxFit.cover),
+                          fit: BoxFit.contain),
                     ),
                   ),
                   staggeredTileBuilder: (int index) => StaggeredTile.count(
-                      (index % 3 == 0) ? 2 : 1, (index % 4 == 0) ? 2 : 1),
+                      (index % 7 == 0) ? 2 : 1, (index % 7 == 0) ? 2 : 1),
                 );
               }),
     );
