@@ -1,0 +1,13 @@
+[
+    {
+        "origin": [
+            "https://firebase.google.com"
+        ],
+        "method": [
+            "GET",
+            "HEAD",
+            "DELETE"
+        ],
+        "maxAgeSeconds": 3600
+    }
+]
