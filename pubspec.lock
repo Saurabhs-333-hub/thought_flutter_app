@@ -371,6 +371,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.10.0"
+  stacked_card_carousel:
+    dependency: "direct main"
+    description:
+      name: stacked_card_carousel
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.4"
   staggered_grid_view_flutter:
     dependency: "direct main"
     description:
@@ -427,6 +434,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.2"
+  vertical_card_pager:
+    dependency: "direct main"
+    description:
+      name: vertical_card_pager
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.5.0"
   win32:
     dependency: transitive
     description:

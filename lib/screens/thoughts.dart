@@ -2,7 +2,9 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:thought/screens/loginScreen.dart';
 import 'package:thought/widgets/postCard.dart';
 
 class Thoughts extends StatelessWidget {
@@ -17,8 +19,15 @@ class Thoughts extends StatelessWidget {
           InkWell(
               onTap: () async {
                 await FirebaseAuth.instance.signOut();
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => LoginScreen()));
               },
-              child: Icon(Icons.logout_rounded))
+              child: Icon(Icons.logout_rounded)),
+          FloatingActionButton(
+            backgroundColor: Colors.transparent,
+            onPressed: () {},
+            child: CupertinoButton(child: Text("Facts!"), onPressed: () {}),
+          )
         ],
       ),
       body: StreamBuilder(

@@ -49,6 +49,8 @@ dependencies:
   uuid: ^3.0.7
   staggered_grid_view_flutter: ^0.0.4
   sidebar: ^0.0.1
+  vertical_card_pager: ^1.5.0
+  stacked_card_carousel: ^0.0.4
 
 dev_dependencies:
   flutter_test:

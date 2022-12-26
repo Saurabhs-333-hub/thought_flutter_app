@@ -11,6 +11,7 @@ class PostModel {
   // final List datePublished;
   final String profilePic;
   final likes;
+  final String size;
 
   PostModel({
     required this.username,
@@ -20,9 +21,9 @@ class PostModel {
     required this.postUrl,
     required this.datePublished,
     required this.likes,
-    
     required this.profilePic,
     required this.email,
+    required this.size,
   });
 
   get isNotEmpty => null;
@@ -35,22 +36,23 @@ class PostModel {
         'profilePic': profilePic,
         'likes': likes,
         'datePublished': datePublished,
-                'email': email,
+        'email': email,
+        'size': size
       };
 
   static PostModel fromSnap(DocumentSnapshot snap) {
     var snapshot = snap.data() as Map<String, dynamic>;
     return PostModel(
-        username: snapshot['username'],
-        uid: snapshot['uid'],
-        thoughts: snapshot['thoughts'],
-        postId: snapshot['postId'],
-        postUrl: snapshot['postUrl'],
-        datePublished: snapshot['datePublished'],
-        
-        profilePic: snapshot['profilePic'],
-        likes: snapshot['likes'],
-        email: snapshot['email'],
+      username: snapshot['username'],
+      uid: snapshot['uid'],
+      thoughts: snapshot['thoughts'],
+      postId: snapshot['postId'],
+      postUrl: snapshot['postUrl'],
+      datePublished: snapshot['datePublished'],
+      profilePic: snapshot['profilePic'],
+      likes: snapshot['likes'],
+      email: snapshot['email'],
+      size: snapshot['size'],
     );
   }
 }

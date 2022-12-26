@@ -15,15 +15,15 @@ import 'package:thought/utils/utils.dart';
 import 'package:thought/widgets/likeAnimation.dart';
 import 'package:uuid/uuid.dart';
 
-class PostCard extends StatefulWidget {
+class FactCard extends StatefulWidget {
   final snap;
-  const PostCard({required this.snap, super.key});
+  const FactCard({required this.snap, super.key});
 
   @override
-  State<PostCard> createState() => _PostCardState();
+  State<FactCard> createState() => FactCardState();
 }
 
-class _PostCardState extends State<PostCard> {
+class FactCardState extends State<FactCard> {
   bool isLikeAnimating = false;
   int commentLen = 0;
   @override
@@ -36,8 +36,8 @@ class _PostCardState extends State<PostCard> {
   void getComments() async {
     try {
       QuerySnapshot snap = await FirebaseFirestore.instance
-          .collection('posts')
-          .doc(widget.snap['postId'])
+          .collection('facts')
+          .doc(widget.snap['factId'])
           .collection('comments')
           .get();
       commentLen = snap.docs.length;
@@ -60,7 +60,7 @@ class _PostCardState extends State<PostCard> {
       padding: const EdgeInsets.all(8.0),
       child: Container(
         decoration: BoxDecoration(
-            color: Color.fromARGB(31, 38, 0, 255),
+            color: Color.fromARGB(255, 4, 4, 4),
             borderRadius: BorderRadius.circular(40)),
         padding: EdgeInsets.all(10),
         child: Column(children: [
@@ -96,16 +96,11 @@ class _PostCardState extends State<PostCard> {
                             child: Center(
                                 child: SizedBox(
                                     child: Column(children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(20),
-                                // radius: 100,
-                                child: Image.network(
-                                  widget.snap['postUrl'],
-                                  width:
-                                      MediaQuery.of(context).devicePixelRatio *
-                                          60,
-                                ),
-                              ),
+                              // ClipRRect(
+                              //   borderRadius: BorderRadius.circular(20),
+                              //   // radius: 100,
+                              //   child: Image.network(widget.snap['factUrl']),
+                              // ),
                               if (widget.snap['email'] ==
                                   FirebaseAuth.instance.currentUser!.email)
                                 ActionChip(
@@ -146,9 +141,9 @@ class _PostCardState extends State<PostCard> {
                                                       ActionChip(
                                                           onPressed: () async {
                                                             await FirestoreMethods()
-                                                                .deletePost(widget
+                                                                .deleteFact(widget
                                                                         .snap[
-                                                                    'postId']);
+                                                                    'factId']);
                                                             Navigator.of(
                                                                     context)
                                                                 .pop();
@@ -178,62 +173,38 @@ class _PostCardState extends State<PostCard> {
                   icon: Icon(Icons.more_vert_rounded))
             ],
           )),
-          InteractiveViewer(
-            scaleEnabled: true,
-            maxScale: 100,
-            child: InkWell(
-              onDoubleTap: () {
-                FirestoreMethods().likePost(
-                    widget.snap['postId'], user!.uid, widget.snap['likes']);
-                setState(() {
-                  isLikeAnimating = true;
-                });
-              },
-              child: Stack(alignment: Alignment.center, children: [
-                SizedBox(
-                  height: 400,
-                  child: Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        image: DecorationImage(
-                            image: NetworkImage(widget.snap['postUrl']),
-                            // colorFilter:
-                            //     ColorFilter.mode(Colors.white, BlendMode.color),
-                            fit: BoxFit.cover)),
-                  ),
+          InkWell(
+            onDoubleTap: () {
+              FirestoreMethods().likePost(
+                  widget.snap['factId'], user!.uid, widget.snap['likes']);
+              setState(() {
+                isLikeAnimating = true;
+              });
+            },
+            child: Stack(alignment: Alignment.center, children: [
+              AnimatedOpacity(
+                duration: Duration(milliseconds: 200),
+                opacity: isLikeAnimating ? 1 : 0,
+                child: LikeAnimation(
+                  child: Icon(Icons.favorite, color: Colors.white, size: 100),
+                  isAnimating: isLikeAnimating,
+                  duration: Duration(milliseconds: 400),
+                  onEnd: () {
+                    setState(() {
+                      isLikeAnimating = false;
+                    });
+                  },
                 ),
-                Container(
-                  width: double.infinity,
-                  child: RichText(
-                      text: TextSpan(
-                          style: TextStyle(color: primaryColor),
-                          children: [
-                        // TextSpan(
-                        //     text: widget.snap['username'].toString(),
-                        //     style: TextStyle(fontWeight: FontWeight.bold)),
-                        TextSpan(
-                            text: widget.snap['thoughts'].toString(),
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: double.tryParse(widget.snap['size'])))
-                      ])),
-                ),
-                AnimatedOpacity(
-                  duration: Duration(milliseconds: 200),
-                  opacity: isLikeAnimating ? 1 : 0,
-                  child: LikeAnimation(
-                    child: Icon(Icons.favorite, color: Colors.white, size: 100),
-                    isAnimating: isLikeAnimating,
-                    duration: Duration(milliseconds: 400),
-                    onEnd: () {
-                      setState(() {
-                        isLikeAnimating = false;
-                      });
-                    },
-                  ),
-                )
-              ]),
-            ),
+              ),
+              Text(widget.snap['facts'].toString(),
+                  style: widget.snap['size'] == null
+                      ? TextStyle(
+                          fontWeight: FontWeight.bold,
+                        )
+                      : TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: double.tryParse(widget.snap['size'])))
+            ]),
           ),
           Row(
             children: [
@@ -242,7 +213,7 @@ class _PostCardState extends State<PostCard> {
                 smallLike: true,
                 child: IconButton(
                     onPressed: () async {
-                      await FirestoreMethods().likePost(widget.snap['postId'],
+                      await FirestoreMethods().likePost(widget.snap['factId'],
                           user!.uid, widget.snap['likes']);
                     },
                     icon: Icon(
@@ -286,22 +257,17 @@ class _PostCardState extends State<PostCard> {
                 "${widget.snap['likes'].length} likes",
                 style: Theme.of(context).textTheme.bodyText2,
               ),
-              // Container(
-              //   width: double.infinity,
-              //   child: RichText(
-              //       text: TextSpan(
-              //           style: TextStyle(color: primaryColor),
-              //           children: [
-              //         TextSpan(
-              //             text: widget.snap['username'].toString(),
-              //             style: TextStyle(fontWeight: FontWeight.bold)),
-              //         TextSpan(
-              //             text: widget.snap['thoughts'].toString(),
-              //             style: TextStyle(
-              //                 fontWeight: FontWeight.bold,
-              //                 fontSize: double.tryParse(widget.snap['size'])))
-              //       ])),
-              // ),
+              Container(
+                width: double.infinity,
+                child: RichText(
+                    text: TextSpan(
+                        style: TextStyle(color: primaryColor),
+                        children: [
+                      TextSpan(
+                          text: widget.snap['username'].toString(),
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                    ])),
+              ),
               Row(
                 children: [
                   if (commentLen > 0)
