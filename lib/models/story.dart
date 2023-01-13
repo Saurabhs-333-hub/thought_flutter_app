@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class FactModel {
+class StoryModel {
   final String username;
   final String uid;
-  final String facts;
-  final String factId;
+  final String stories;
+  final String storyId;
   final String datePublished;
-  // final String factUrl;
+  // final String storyUrl;
   final String email;
   // final List datePublished;
   final String profilePic;
@@ -15,32 +15,28 @@ class FactModel {
   final String font;
   final String color1;
   final String color2;
-  final String textColor;
-
-  FactModel({
-    required this.username,
-    required this.uid,
-    required this.facts,
-    required this.factId,
-    // required this.factUrl,
-    required this.datePublished,
-    required this.likes,
-    required this.profilePic,
-    required this.email,
-    required this.size,
-    required this.font,
-    required this.color1,
-    required this.color2,
-    required this.textColor,
-  });
+  StoryModel(
+      {required this.username,
+      required this.uid,
+      required this.stories,
+      required this.storyId,
+      // required this.storyUrl,
+      required this.datePublished,
+      required this.likes,
+      required this.profilePic,
+      required this.email,
+      required this.size,
+      required this.font,
+      required this.color1,
+      required this.color2});
 
   get isNotEmpty => null;
   Map<String, dynamic> toJson() => {
         'username': username,
         'uid': uid,
-        'facts': facts,
-        'factId': factId,
-        // 'factUrl': factUrl,
+        'stories': stories,
+        'storyId': storyId,
+        // 'storyUrl': storyUrl,
         'profilePic': profilePic,
         'likes': likes,
         'datePublished': datePublished,
@@ -48,18 +44,17 @@ class FactModel {
         'size': size,
         'font': font,
         'color1': color1,
-        'color2': color2,
-        'textColor': textColor
+        'color2': color2
       };
 
-  static FactModel fromSnap(DocumentSnapshot snap) {
+  static StoryModel fromSnap(DocumentSnapshot snap) {
     var snapshot = snap.data() as Map<String, dynamic>;
-    return FactModel(
+    return StoryModel(
         username: snapshot['username'],
         uid: snapshot['uid'],
-        facts: snapshot['facts'],
-        factId: snapshot['factId'],
-        // factUrl: snapshot['factUrl'],
+        stories: snapshot['stories'],
+        storyId: snapshot['storyId'],
+        // storyUrl: snapshot['storyUrl'],
         datePublished: snapshot['datePublished'],
         profilePic: snapshot['profilePic'],
         likes: snapshot['likes'],
@@ -67,7 +62,6 @@ class FactModel {
         size: snapshot['size'],
         font: snapshot['font'],
         color1: snapshot['color1'],
-        color2: snapshot['color2'],
-        textColor: snapshot['textColor']);
+        color2: snapshot['color2']);
   }
 }

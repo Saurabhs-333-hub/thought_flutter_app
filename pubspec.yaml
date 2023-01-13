@@ -51,6 +51,14 @@ dependencies:
   sidebar: ^0.0.1
   vertical_card_pager: ^1.5.0
   stacked_card_carousel: ^0.0.4
+  flutter_colorpicker: ^1.0.3
+  flutter_circle_color_picker: ^0.3.0
+  glassmorphism: ^3.0.0
+  fluttertoast: ^8.1.2
+  cherry_toast: ^1.0.8
+  font_awesome_flutter: ^10.3.0
+  google_fonts: ^3.0.1
+  expandable_menu: ^0.0.5
 
 dev_dependencies:
   flutter_test:

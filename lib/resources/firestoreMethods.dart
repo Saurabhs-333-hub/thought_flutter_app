@@ -3,20 +3,21 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:thought/models/fact.dart';
 import 'package:thought/models/post.dart';
+import 'package:thought/models/story.dart';
 import 'package:thought/resources/storageMethod.dart';
 import 'package:uuid/uuid.dart';
 
 class FirestoreMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   Future uploadPost(
-    String thoughts,
-    Uint8List file,
-    String uid,
-    String username,
-    String profilePic,
-    String email,
-    String size,
-  ) async {
+      String thoughts,
+      Uint8List file,
+      String uid,
+      String username,
+      String profilePic,
+      String email,
+      String size,
+      String font) async {
     try {
       String pic =
           await StorageMethod().uploadToStorage("postImage", file, true);
@@ -31,7 +32,8 @@ class FirestoreMethods {
           likes: [],
           profilePic: profilePic,
           email: email,
-          size: size);
+          size: size,
+          font: font);
       await _firestore.collection('posts').doc(postId).set(post.toJson());
       String res = 'success';
     } catch (e) {
@@ -40,14 +42,18 @@ class FirestoreMethods {
   }
 
   Future uploadFact(
-      String facts,
-      // Uint8List file,
-      String uid,
-      String username,
-      String profilePic,
-      String email,
-      String size,
-      String font) async {
+    String facts,
+    // Uint8List file,
+    String uid,
+    String username,
+    String profilePic,
+    String email,
+    String size,
+    String font,
+    String color1,
+    String color2,
+    String textColor,
+  ) async {
     try {
       // String pic =
       //     await StorageMethod().uploadToStorage("factImage", file, true);
@@ -63,8 +69,47 @@ class FirestoreMethods {
           profilePic: profilePic,
           email: email,
           size: size,
-          font: font);
+          font: font,
+          color1: color1,
+          color2: color2,
+          textColor:textColor);
       await _firestore.collection('facts').doc(factId).set(fact.toJson());
+      String res = 'success';
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future uploadStory(
+      String stories,
+      // Uint8List file,
+      String uid,
+      String username,
+      String profilePic,
+      String email,
+      String size,
+      String font,
+      String color1,
+    String color2,) async {
+    try {
+      // String pic =
+      //     await StorageMethod().uploadToStorage("factImage", file, true);
+      String storyId = Uuid().v1();
+      StoryModel story = StoryModel(
+          username: username,
+          uid: uid,
+          stories: stories,
+          storyId: storyId,
+          // factUrl: pic,
+          datePublished: DateTime.now().toString(),
+          likes: [],
+          profilePic: profilePic,
+          email: email,
+          size: size,
+          font: font,
+          color1: color1,
+          color2: color2);
+      await _firestore.collection('stories').doc(storyId).set(story.toJson());
       String res = 'success';
     } catch (e) {
       print(e.toString());
@@ -161,6 +206,23 @@ class FirestoreMethods {
       await FirebaseFirestore.instance
           .collection('posts')
           .doc(factId)
+          .collection('comments')
+          .doc(commentId)
+          .delete();
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<void> deleteStory(storyId) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('stories')
+          .doc(storyId)
+          .delete();
+      await FirebaseFirestore.instance
+          .collection('stories')
+          .doc(storyId)
           .collection('comments')
           .doc(commentId)
           .delete();
