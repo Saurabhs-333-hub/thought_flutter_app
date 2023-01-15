@@ -57,12 +57,6 @@ class _PostsCardState extends State<PostsCard> {
   int following = 0;
   bool isFollowing = false;
   bool isLoading = false;
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    getData();
-  }
 
   getData() async {
     setState(() {
@@ -100,6 +94,13 @@ class _PostsCardState extends State<PostsCard> {
     setState(() {
       isLoading = false;
     });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    // getData();
+    super.dispose();
   }
 
   @override

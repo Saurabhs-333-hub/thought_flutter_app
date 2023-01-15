@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class TextInfo {
@@ -21,3 +22,5 @@ class TextInfo {
     required this.textAlign,
   });
 }
+
+

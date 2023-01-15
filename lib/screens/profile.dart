@@ -1,25 +1,27 @@
-import 'dart:async';
+// import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:thought/models/user.dart';
-import 'package:thought/providers/userProvider.dart';
+// import 'package:provider/provider.dart';
+// import 'package:thought/models/user.dart';
+// import 'package:thought/providers/userProvider.dart';
 import 'package:thought/resources/firestoreMethods.dart';
-import 'package:thought/utils/colors.dart';
+import 'package:thought/screens/uploadQuoteSuggestions.dart';
+// import 'package:thought/utils/colors.dart';
 import 'package:thought/utils/utils.dart';
 import 'package:thought/widgets/backup.dart';
-import 'package:thought/widgets/factCard.dart';
+// import 'package:thought/widgets/factCard.dart';
 // import 'package:thought/widgets/factsCard.dart';
 import 'package:thought/widgets/followButton.dart';
-import 'package:thought/widgets/likeAnimation.dart';
-import 'package:thought/widgets/postCard.dart';
+// import 'package:thought/widgets/likeAnimation.dart';
+// import 'package:thought/widgets/postCard.dart';
 import 'package:thought/widgets/postsCard.dart';
 import 'package:thought/widgets/storiesCard.dart';
-import 'package:thought/widgets/storyCard.dart';
-import 'package:intl/intl.dart';
+// import 'package:thought/widgets/storyCard.dart';
+// import 'package:intl/intl.dart';
 
 // bool isrefreshing = false;
 
@@ -239,13 +241,16 @@ class _ProfileState extends State<Profile> {
                             backgroundColor: Colors.blue,
                             borderColor: Colors.transparent,
                             text: "Edit",
-                            textColor: Colors.white)
+                            textColor: Colors.white,
+                            width: 100,
+                          )
                         : isFollowing
                             ? FollowButton(
                                 backgroundColor: Colors.blue,
                                 borderColor: Colors.transparent,
                                 text: "UnFollow",
                                 textColor: Colors.white,
+                                width: 100,
                                 function: (() async {
                                   await FirestoreMethods().followUser(
                                       FirebaseAuth.instance.currentUser!.uid,
@@ -261,6 +266,7 @@ class _ProfileState extends State<Profile> {
                                 borderColor: Colors.transparent,
                                 text: "Follow",
                                 textColor: Colors.white,
+                                width: 100,
                                 function: (() async {
                                   await FirestoreMethods().followUser(
                                       FirebaseAuth.instance.currentUser!.uid,
@@ -271,6 +277,16 @@ class _ProfileState extends State<Profile> {
                                   });
                                 }),
                               ),
+                    widget.uid == 'rBUmE29vD8NskqbgAkz95ukzN2j1'
+                        ? IconButton(
+                            onPressed: () {
+                              Navigator.of(context)
+                                  .push(CupertinoPageRoute(builder: (context) {
+                                return UploadQuoteSuggestions(uid: widget.uid,);
+                              }));
+                            },
+                            icon: Icon(CupertinoIcons.add_circled_solid))
+                        : SizedBox.shrink(),
                     Expanded(
                       child: SizedBox(
                         child: DropdownButton<String>(
@@ -521,8 +537,3 @@ class _ProfileState extends State<Profile> {
         style: TextStyle(color: Colors.amber),
       ));
 }
-
-
-
-
-

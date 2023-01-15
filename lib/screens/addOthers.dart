@@ -66,31 +66,23 @@ class AddOthersState extends State<AddOthers> {
   // }
 
   void factImage(
-      String uid,
-      String username,
-      String profilePic,
-      String email,
-      String size,
-      String font,
-      String color1,
-      String color2,
-      String color3) async {
+    String uid,
+    String username,
+    String profilePic,
+    String email,
+  ) async {
     try {
       setState(() {
         isLoading = true;
       });
       await FirestoreMethods().uploadFact(
-          _textInputController.text.trim(),
-          // _file!,
-          uid,
-          username,
-          profilePic,
-          email,
-          size,
-          font,
-          color1,
-          color2,
-          color3);
+        _textInputController.text.trim(),
+        _file!,
+        uid,
+        username,
+        profilePic,
+        email,
+      );
       // if (res == 'success') {
       //   showSnackBar(context, "success");
       // } else {
@@ -134,23 +126,24 @@ class AddOthersState extends State<AddOthers> {
     }
   }
 
-  void storyImage(String uid, String username, String profilePic, String email,
-      String size, String font, String color1, String color2) async {
+  void storyImage(
+    String uid,
+    String username,
+    String profilePic,
+    String email,
+  ) async {
     try {
       setState(() {
         isLoading = true;
       });
       await FirestoreMethods().uploadStory(
-          _textInputController.text.trim(),
-          // _file!,
-          uid,
-          username,
-          profilePic,
-          email,
-          size,
-          font,
-          color1,
-          color2);
+        _textInputController.text.trim(),
+        // _file!,
+        uid,
+        username,
+        profilePic,
+        email,
+      );
       // if (res == 'success') {
       //   showSnackBar(context, "success");
       // } else {
@@ -577,15 +570,11 @@ class AddOthersState extends State<AddOthers> {
                             hoverColor: Color.fromARGB(0, 255, 193, 7),
                             onTap: () {
                               factImage(
-                                  user!.uid,
-                                  user.username,
-                                  user.profilePic,
-                                  user.email,
-                                  updatedvalue.toString(),
-                                  updatedfont.toString(),
-                                  _color1.toString(),
-                                  _color2.toString(),
-                                  color3.toString());
+                                user!.uid,
+                                user.username,
+                                user.profilePic,
+                                user.email,
+                              );
                             },
                             child: isLoading == true
                                 ? CircularProgressIndicator()
@@ -606,14 +595,11 @@ class AddOthersState extends State<AddOthers> {
                             hoverColor: Color.fromARGB(0, 255, 193, 7),
                             onTap: () {
                               storyImage(
-                                  user!.uid,
-                                  user.username,
-                                  user.profilePic,
-                                  user.email,
-                                  updatedvalue.toString(),
-                                  updatedfont.toString(),
-                                  _color1.toString(),
-                                  _color2.toString());
+                                user!.uid,
+                                user.username,
+                                user.profilePic,
+                                user.email,
+                              );
                             },
                             child: isLoading == true
                                 ? CircularProgressIndicator()

@@ -14,6 +14,7 @@ import 'package:thought/screens/profile.dart';
 import 'package:thought/screens/stories.dart';
 import 'package:thought/screens/thoughts.dart';
 import 'package:thought/utils/colors.dart';
+import 'package:thought/widgets/squarePage.dart';
 
 class MobileScreenLayout extends StatefulWidget {
   const MobileScreenLayout({super.key});
@@ -100,7 +101,8 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
           children: [
             Thoughts(),
             Explorer(),
-            AddStories(),
+            // AddStories(),
+            ImageMaker1(),
             Stories(),
             Profile(
               uid: FirebaseAuth.instance.currentUser!.uid,

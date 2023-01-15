@@ -1,25 +1,25 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class StoryModel {
+class QuotePostSuggestions {
   final String username;
   final String uid;
-  final String stories;
-  final String storyId;
+  // final String thoughts;
+  final String postId;
   final String datePublished;
-  // final String storyUrl;
+  final String postUrl;
   final String email;
   // final List datePublished;
   final String profilePic;
-  final likes;
+  // final likes;
 
-  StoryModel({
+  QuotePostSuggestions({
     required this.username,
     required this.uid,
-    required this.stories,
-    required this.storyId,
-    // required this.storyUrl,
+    // required this.thoughts,
+    required this.postId,
+    required this.postUrl,
     required this.datePublished,
-    required this.likes,
+    // required this.likes,
     required this.profilePic,
     required this.email,
   });
@@ -28,26 +28,26 @@ class StoryModel {
   Map<String, dynamic> toJson() => {
         'username': username,
         'uid': uid,
-        'stories': stories,
-        'storyId': storyId,
-        // 'storyUrl': storyUrl,
+        // 'thoughts': thoughts,
+        'postId': postId,
+        'postUrl': postUrl,
         'profilePic': profilePic,
-        'likes': likes,
+        // 'likes': likes,
         'datePublished': datePublished,
         'email': email,
       };
 
-  static StoryModel fromSnap(DocumentSnapshot snap) {
+  static QuotePostSuggestions fromSnap(DocumentSnapshot snap) {
     var snapshot = snap.data() as Map<String, dynamic>;
-    return StoryModel(
+    return QuotePostSuggestions(
       username: snapshot['username'],
       uid: snapshot['uid'],
-      stories: snapshot['stories'],
-      storyId: snapshot['storyId'],
-      // storyUrl: snapshot['storyUrl'],
+      // thoughts: snapshot['thoughts'],
+      postId: snapshot['postId'],
+      postUrl: snapshot['postUrl'],
       datePublished: snapshot['datePublished'],
       profilePic: snapshot['profilePic'],
-      likes: snapshot['likes'],
+      // likes: snapshot['likes'],
       email: snapshot['email'],
     );
   }

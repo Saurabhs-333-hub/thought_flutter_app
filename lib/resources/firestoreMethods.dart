@@ -10,30 +10,28 @@ import 'package:uuid/uuid.dart';
 class FirestoreMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   Future uploadPost(
-      String thoughts,
-      Uint8List file,
-      String uid,
-      String username,
-      String profilePic,
-      String email,
-      String size,
-      String font) async {
+    String thoughts,
+    Uint8List file,
+    String uid,
+    String username,
+    String profilePic,
+    String email,
+  ) async {
     try {
       String pic =
           await StorageMethod().uploadToStorage("postImage", file, true);
       String postId = Uuid().v1();
       PostModel post = PostModel(
-          username: username,
-          uid: uid,
-          thoughts: thoughts,
-          postId: postId,
-          postUrl: pic,
-          datePublished: DateTime.now().toString(),
-          likes: [],
-          profilePic: profilePic,
-          email: email,
-          size: size,
-          font: font);
+        username: username,
+        uid: uid,
+        thoughts: thoughts,
+        postId: postId,
+        postUrl: pic,
+        datePublished: DateTime.now().toString(),
+        likes: [],
+        profilePic: profilePic,
+        email: email,
+      );
       await _firestore.collection('posts').doc(postId).set(post.toJson());
       String res = 'success';
     } catch (e) {
@@ -43,36 +41,27 @@ class FirestoreMethods {
 
   Future uploadFact(
     String facts,
-    // Uint8List file,
+    Uint8List file,
     String uid,
     String username,
     String profilePic,
     String email,
-    String size,
-    String font,
-    String color1,
-    String color2,
-    String textColor,
   ) async {
     try {
       // String pic =
       //     await StorageMethod().uploadToStorage("factImage", file, true);
       String factId = Uuid().v1();
       FactModel fact = FactModel(
-          username: username,
-          uid: uid,
-          facts: facts,
-          factId: factId,
-          // factUrl: pic,
-          datePublished: DateTime.now().toString(),
-          likes: [],
-          profilePic: profilePic,
-          email: email,
-          size: size,
-          font: font,
-          color1: color1,
-          color2: color2,
-          textColor:textColor);
+        username: username,
+        uid: uid,
+        facts: facts,
+        factId: factId,
+        // factUrl: pic,
+        datePublished: DateTime.now().toString(),
+        likes: [],
+        profilePic: profilePic,
+        email: email,
+      );
       await _firestore.collection('facts').doc(factId).set(fact.toJson());
       String res = 'success';
     } catch (e) {
@@ -81,16 +70,13 @@ class FirestoreMethods {
   }
 
   Future uploadStory(
-      String stories,
-      // Uint8List file,
-      String uid,
-      String username,
-      String profilePic,
-      String email,
-      String size,
-      String font,
-      String color1,
-    String color2,) async {
+    String stories,
+    // Uint8List file,
+    String uid,
+    String username,
+    String profilePic,
+    String email,
+  ) async {
     try {
       // String pic =
       //     await StorageMethod().uploadToStorage("factImage", file, true);
@@ -105,10 +91,7 @@ class FirestoreMethods {
           likes: [],
           profilePic: profilePic,
           email: email,
-          size: size,
-          font: font,
-          color1: color1,
-          color2: color2);
+);
       await _firestore.collection('stories').doc(storyId).set(story.toJson());
       String res = 'success';
     } catch (e) {

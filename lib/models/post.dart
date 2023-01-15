@@ -11,8 +11,7 @@ class PostModel {
   // final List datePublished;
   final String profilePic;
   final likes;
-  final String size;
-  final String font;
+  
 
   PostModel({
     required this.username,
@@ -24,8 +23,7 @@ class PostModel {
     required this.likes,
     required this.profilePic,
     required this.email,
-    required this.size,
-    required this.font,
+    
   });
 
   get isNotEmpty => null;
@@ -39,8 +37,7 @@ class PostModel {
         'likes': likes,
         'datePublished': datePublished,
         'email': email,
-        'size': size,
-        'font': font
+        
       };
 
   static PostModel fromSnap(DocumentSnapshot snap) {
@@ -55,8 +52,7 @@ class PostModel {
       profilePic: snapshot['profilePic'],
       likes: snapshot['likes'],
       email: snapshot['email'],
-      size: snapshot['size'],
-      font: snapshot['font'],
+      
     );
   }
 }
