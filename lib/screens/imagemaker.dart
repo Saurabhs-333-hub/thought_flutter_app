@@ -178,62 +178,62 @@ class _ImageMakerState extends State<ImageMaker> {
   String? updatedTextStyle;
 
   final _controller = CircleColorPickerController();
-  void postImage(String uid, String username, String profilePic, String email,
-      String size, String font) async {
-    try {
-      setState(() {
-        isLoading = true;
-      });
-      await FirestoreMethods().uploadPost(
-        _textInputController.text.trim(),
-        _file!,
-        uid,
-        username,
-        profilePic,
-        email,
-      );
-      // if (res == 'success') {
-      //   showSnackBar(context, "success");
-      // } else {
-      //   showSnackBar(context, res);
-      // }
-      setState(() {
-        isLoading = false;
-        _file = null;
-        _textInputController.text = "";
-      });
-      CherryToast.success(
-        // icon: Icons.,
-        // themeColor: Color.fromARGB(255, 255, 255, 255),
-        title: Text("Posted....", style: TextStyle(color: Colors.black)),
-        toastPosition: Position.top,
+  // void postImage(String uid, String username, String profilePic, String email,
+  //     String size, String font) async {
+  //   try {
+  //     setState(() {
+  //       isLoading = true;
+  //     });
+  //     await FirestoreMethods().uploadPost(
+  //       _textInputController.text.trim(),
+  //       _file!,
+  //       uid,
+  //       username,
+  //       profilePic,
+  //       email,
+  //     );
+  //     // if (res == 'success') {
+  //     //   showSnackBar(context, "success");
+  //     // } else {
+  //     //   showSnackBar(context, res);
+  //     // }
+  //     setState(() {
+  //       isLoading = false;
+  //       _file = null;
+  //       _textInputController.text = "";
+  //     });
+  //     CherryToast.success(
+  //       // icon: Icons.,
+  //       // themeColor: Color.fromARGB(255, 255, 255, 255),
+  //       title: Text("Posted....", style: TextStyle(color: Colors.black)),
+  //       toastPosition: Position.top,
 
-        // autoDismiss:
-        //     false,
+  //       // autoDismiss:
+  //       //     false,
 
-        displayTitle: true,
-        displayCloseButton: true,
-        autoDismiss: true,
-        // animationCurve:
-        //     Cubic(
-        //         40.0,
-        //         20.0,
-        //         40.0,
-        //         20.0),
-        animationType: AnimationType.fromLeft,
-        displayIcon: true,
-        // iconColor: Colors.red,
-        // iconSize: 40,
-        layout: ToastLayout.ltr,
-        enableIconAnimation: true,
-        description: Text("Your Post is Posted....",
-            style: TextStyle(color: Colors.black)),
-        borderRadius: 40,
-      ).show(context);
-    } catch (e) {
-      showSnackBar(context, e.toString());
-    }
-  }
+  //       displayTitle: true,
+  //       displayCloseButton: true,
+  //       autoDismiss: true,
+  //       // animationCurve:
+  //       //     Cubic(
+  //       //         40.0,
+  //       //         20.0,
+  //       //         40.0,
+  //       //         20.0),
+  //       animationType: AnimationType.fromLeft,
+  //       displayIcon: true,
+  //       // iconColor: Colors.red,
+  //       // iconSize: 40,
+  //       layout: ToastLayout.ltr,
+  //       enableIconAnimation: true,
+  //       description: Text("Your Post is Posted....",
+  //           style: TextStyle(color: Colors.black)),
+  //       borderRadius: 40,
+  //     ).show(context);
+  //   } catch (e) {
+  //     showSnackBar(context, e.toString());
+  //   }
+  // }
 
   void factImage(
       String uid,
@@ -955,32 +955,32 @@ class _ImageMakerState extends State<ImageMaker> {
             ),
             Row(
               children: [
-                Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Color.fromARGB(66, 56, 56, 56)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: InkWell(
-                      splashColor: Colors.transparent,
-                      splashFactory: NoSplash.splashFactory,
-                      highlightColor: Color.fromARGB(0, 255, 193, 7),
-                      hoverColor: Color.fromARGB(0, 255, 193, 7),
-                      onTap: () {
-                        postImage(
-                            user!.uid,
-                            user.username,
-                            user.profilePic,
-                            user.email,
-                            updatedvalue.toString(),
-                            updatedfont.toString());
-                      },
-                      child: isLoading == true
-                          ? CircularProgressIndicator()
-                          : Text("Upload Post"),
-                    ),
-                  ),
-                ),
+                // Container(
+                //   decoration: BoxDecoration(
+                //       borderRadius: BorderRadius.circular(20),
+                //       color: Color.fromARGB(66, 56, 56, 56)),
+                //   child: Padding(
+                //     padding: const EdgeInsets.all(8.0),
+                //     child: InkWell(
+                //       splashColor: Colors.transparent,
+                //       splashFactory: NoSplash.splashFactory,
+                //       highlightColor: Color.fromARGB(0, 255, 193, 7),
+                //       hoverColor: Color.fromARGB(0, 255, 193, 7),
+                //       onTap: () {
+                //         postImage(
+                //             user!.uid,
+                //             user.username,
+                //             user.profilePic,
+                //             user.email,
+                //             updatedvalue.toString(),
+                //             updatedfont.toString());
+                //       },
+                //       child: isLoading == true
+                //           ? CircularProgressIndicator()
+                //           : Text("Upload Post"),
+                //     ),
+                //   ),
+                // ),
                 Container(
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),

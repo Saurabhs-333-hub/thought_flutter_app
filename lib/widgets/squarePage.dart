@@ -32,6 +32,39 @@ import 'package:thought/utils/requestPermission.dart';
 import 'package:thought/utils/utils.dart';
 import 'package:thought/widgets/addText.dart';
 import 'package:thought/widgets/imageText.dart';
+import 'package:http/http.dart' as http;
+
+late String resp;
+Future<Fonts> googleFonts() async {
+  final response = await http.get(Uri.parse(
+      'https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyAdg9aOi64GIzE0lxu4hvsSs5KfKSAEScs'));
+  // print(response.body);
+  // var list = json.decode(response.body).toString();
+  // print(list as List);
+  resp = response.body;
+  // print(resp);
+  if (response.statusCode == 200) {
+    return Fonts.fromJson(json.decode(response.body));
+  } else {
+    throw Exception('Failed to load album');
+  }
+}
+
+class Fonts {
+  final String kind;
+  final String items;
+  final String family;
+
+  Fonts({required this.kind, required this.items, required this.family});
+
+  factory Fonts.fromJson(Map<String, dynamic> json) {
+    return Fonts(
+      kind: json['kind'],
+      items: json['items'],
+      family: json['items']['family'],
+    );
+  }
+}
 
 class ImageMaker1 extends StatefulWidget {
   // final String uid;
@@ -42,6 +75,7 @@ class ImageMaker1 extends StatefulWidget {
 }
 
 class _ImageMaker1State extends State<ImageMaker1> {
+  late Future<Fonts> googleFont;
   Uint8List? _file;
   List<ImageInfo1> _file1 = [];
   String file = 'sdfgbgfgdfgdf';
@@ -59,6 +93,7 @@ class _ImageMaker1State extends State<ImageMaker1> {
     // TODO: implement initState
     super.initState();
     checkOption(index);
+    googleFont = googleFonts();
   }
 
   final TextEditingController _textInputController = TextEditingController();
@@ -88,6 +123,7 @@ class _ImageMaker1State extends State<ImageMaker1> {
     }
   }
 
+  // var googleFont = GoogleFonts.getFont('Fira Sans');
   saveImage(Uint8List bytes) async {
     final time = DateTime.now()
         .toIso8601String()
@@ -104,6 +140,255 @@ class _ImageMaker1State extends State<ImageMaker1> {
     });
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text("Selected For Styling")));
+  }
+
+  showSheet() {
+    showModalBottomSheet(
+        elevation: 0,
+        barrierColor: Colors.transparent,
+        isScrollControlled: true,
+        isDismissible: true,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(40))),
+        backgroundColor: Colors.transparent,
+        // constraints: BoxConstraints(maxHeight: 400),
+        context: context,
+        builder: (context) {
+          return DraggableScrollableSheet(
+            expand: false,
+            builder: (context, scrollController) => Container(
+                decoration: BoxDecoration(
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(40)),
+                    gradient: LinearGradient(
+                        colors: [
+                          Color.fromARGB(255, 0, 0, 0),
+                          // _color1.withOpacity(1),
+                          // _color2.withOpacity(0.6),
+                          Colors.transparent
+                        ],
+                        begin: Alignment.bottomCenter,
+                        end: Alignment.topCenter)),
+                child: Center(
+                    child: GridView(
+                  shrinkWrap: true,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 4,
+                  ),
+                  // crossAxisCount: 2,
+                  children: [
+                    CupertinoButton(
+                      onPressed: () => showModalBottomSheet(
+                        // enableDrag: true,
+                        isScrollControlled: true,
+                        barrierColor: Color.fromARGB(58, 7, 7, 255),
+                        context: context,
+                        builder: (context) => Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Center(
+                            child: SizedBox(
+                              // height: 400,
+                              child: Column(
+                                children: [
+                                  Center(
+                                    child: ColorPicker(
+                                      // controller: _controller,
+                                      onColorChanged: (Color color) =>
+                                          setState(() {
+                                        _color1 = color;
+                                      }),
+                                      pickerColor: Colors.black,
+                                      colorPickerWidth: 200,
+                                      pickerAreaBorderRadius:
+                                          BorderRadius.circular(40),
+                                      paletteType: PaletteType.rgbWithBlue,
+                                      enableAlpha: true,
+                                      // showLabel: true,
+                                      // size: Size(240, 240),
+                                      // thumbSize: 40,
+                                      // strokeWidth: 2,
+                                    ),
+                                  ),
+                                  Text(_color1.toString()),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      child: Text("Color1"),
+                    ),
+                    CupertinoButton(
+                      onPressed: () => showModalBottomSheet(
+                        // enableDrag: true,
+                        isScrollControlled: true,
+                        barrierColor: Color.fromARGB(58, 7, 7, 255),
+                        context: context,
+                        builder: (context) => Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Center(
+                            child: SizedBox(
+                              // height: 400,
+                              child: Column(
+                                children: [
+                                  Center(
+                                    child: ColorPicker(
+                                      // controller: _controller,
+                                      onColorChanged: (Color color) =>
+                                          setState(() {
+                                        _color2 = color;
+                                      }),
+                                      pickerColor: Colors.black,
+                                      colorPickerWidth: 200,
+                                      pickerAreaBorderRadius:
+                                          BorderRadius.circular(40),
+                                      paletteType: PaletteType.rgbWithBlue,
+                                      enableAlpha: true,
+                                      // showLabel: true,
+                                      // size: Size(240, 240),
+                                      // thumbSize: 40,
+                                      // strokeWidth: 2,
+                                    ),
+                                  ),
+                                  Text(_color1.toString()),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      child: Text("Color2"),
+                    ),
+                    IconButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.white),
+                            shadowColor:
+                                MaterialStateProperty.all(Colors.amber),
+                            elevation: MaterialStateProperty.all(20)),
+                        tooltip: "Increase Text Size",
+                        onPressed: () {
+                          increaseFontSize();
+                        },
+                        icon: Container(
+                            decoration: BoxDecoration(
+                                color: Color.fromARGB(118, 0, 0, 0),
+                                borderRadius: BorderRadius.circular(60)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(24.0),
+                              child: Icon(Icons.text_increase_rounded),
+                            ))),
+                    IconButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.white),
+                            shadowColor:
+                                MaterialStateProperty.all(Colors.amber),
+                            elevation: MaterialStateProperty.all(20)),
+                        tooltip: "Decrease Text Size",
+                        onPressed: () {
+                          decreaseFontSize();
+                        },
+                        icon: Icon(Icons.text_decrease_rounded)),
+                    IconButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.white),
+                            shadowColor:
+                                MaterialStateProperty.all(Colors.amber),
+                            elevation: MaterialStateProperty.all(20)),
+                        tooltip: "Align Left",
+                        onPressed: () {
+                          alignLeft();
+                        },
+                        icon: Icon(Icons.align_horizontal_left_rounded)),
+                    IconButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.white),
+                            shadowColor:
+                                MaterialStateProperty.all(Colors.amber),
+                            elevation: MaterialStateProperty.all(20)),
+                        tooltip: "Align Center",
+                        onPressed: () {},
+                        icon: Icon(Icons.align_horizontal_center_rounded)),
+                    IconButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.white),
+                            shadowColor:
+                                MaterialStateProperty.all(Colors.amber),
+                            elevation: MaterialStateProperty.all(20)),
+                        tooltip: "Align Right",
+                        onPressed: () {
+                          alignRight();
+                        },
+                        icon: Icon(Icons.align_horizontal_right_rounded)),
+                    IconButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.white),
+                            shadowColor:
+                                MaterialStateProperty.all(Colors.amber),
+                            elevation: MaterialStateProperty.all(20)),
+                        tooltip: "Bold",
+                        onPressed: () {
+                          boldText();
+                        },
+                        icon: Icon(Icons.format_bold_rounded)),
+                    IconButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.white),
+                            shadowColor:
+                                MaterialStateProperty.all(Colors.amber),
+                            elevation: MaterialStateProperty.all(20)),
+                        tooltip: "Italic",
+                        onPressed: () {
+                          italicText();
+                        },
+                        icon: Icon(Icons.format_italic_rounded)),
+                    IconButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.white),
+                            shadowColor:
+                                MaterialStateProperty.all(Colors.amber),
+                            elevation: MaterialStateProperty.all(20)),
+                        tooltip: "Delete",
+                        onPressed: () {
+                          removeText();
+                        },
+                        icon: Icon(Icons.delete_rounded)),
+                    IconButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.white),
+                            shadowColor:
+                                MaterialStateProperty.all(Colors.amber),
+                            elevation: MaterialStateProperty.all(20)),
+                        tooltip: "Save",
+                        onPressed: () {
+                          saveToGallery(context);
+                        },
+                        icon: Icon(Icons.save_alt_rounded)),
+                    IconButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.white),
+                            shadowColor:
+                                MaterialStateProperty.all(Colors.amber),
+                            elevation: MaterialStateProperty.all(20)),
+                        tooltip: "Format",
+                        onPressed: () {
+                          addLinesToText();
+                        },
+                        icon: Icon(Icons.space_bar_rounded))
+                  ],
+                ))),
+            controller: scrollController,
+          );
+        });
   }
 
   int index1 = 0;
@@ -140,7 +425,8 @@ class _ImageMaker1State extends State<ImageMaker1> {
 
   increaseFontSize() {
     setState(() {
-      texts[currentIndex].fontSize = texts[currentIndex].fontSize += 2;
+      if (texts.isNotEmpty)
+        texts[currentIndex].fontSize = texts[currentIndex].fontSize += 2;
     });
     // ScaffoldMessenger.of(context)
     //     .showSnackBar(SnackBar(content: Text("Selected For Styling")));
@@ -148,7 +434,8 @@ class _ImageMaker1State extends State<ImageMaker1> {
 
   decreaseFontSize() {
     setState(() {
-      texts[currentIndex].fontSize = texts[currentIndex].fontSize -= 2;
+      if (texts.isNotEmpty)
+        texts[currentIndex].fontSize = texts[currentIndex].fontSize -= 2;
     });
     // ScaffoldMessenger.of(context)
     //     .showSnackBar(SnackBar(content: Text("Selected For Styling")));
@@ -156,57 +443,63 @@ class _ImageMaker1State extends State<ImageMaker1> {
 
   alignLeft() {
     setState(() {
-      texts[currentIndex].textAlign = TextAlign.left;
+      if (texts.isNotEmpty) texts[currentIndex].textAlign = TextAlign.left;
     });
   }
 
   alignCenter() {
     setState(() {
-      texts[currentIndex].textAlign = TextAlign.center;
+      if (texts.isNotEmpty) texts[currentIndex].textAlign = TextAlign.center;
     });
   }
 
   alignRight() {
     setState(() {
-      texts[currentIndex].textAlign = TextAlign.right;
+      if (texts.isNotEmpty) texts[currentIndex].textAlign = TextAlign.right;
     });
   }
 
   boldText() {
     setState(() {
-      if (texts[currentIndex].fontWeight == FontWeight.bold) {
-        texts[currentIndex].fontWeight = FontWeight.normal;
-      } else {
-        texts[currentIndex].fontWeight = FontWeight.bold;
+      if (texts.isNotEmpty) {
+        if (texts[currentIndex].fontWeight == FontWeight.bold) {
+          texts[currentIndex].fontWeight = FontWeight.normal;
+        } else {
+          texts[currentIndex].fontWeight = FontWeight.bold;
+        }
       }
     });
   }
 
   italicText() {
     setState(() {
-      if (texts[currentIndex].fontStyle == FontStyle.italic) {
-        texts[currentIndex].fontStyle = FontStyle.normal;
-      } else {
-        texts[currentIndex].fontStyle = FontStyle.italic;
+      if (texts.isNotEmpty) {
+        if (texts[currentIndex].fontStyle == FontStyle.italic) {
+          texts[currentIndex].fontStyle = FontStyle.normal;
+        } else {
+          texts[currentIndex].fontStyle = FontStyle.italic;
+        }
       }
     });
   }
 
   addLinesToText() {
     setState(() {
-      if (texts[currentIndex].text.contains('\n')) {
-        texts[currentIndex].text =
-            texts[currentIndex].text.replaceAll('\n', ' ');
-      } else {
-        texts[currentIndex].text =
-            texts[currentIndex].text.replaceAll(' ', '\n');
+      if (texts.isNotEmpty) {
+        if (texts[currentIndex].text.contains('\n')) {
+          texts[currentIndex].text =
+              texts[currentIndex].text.replaceAll('\n', ' ');
+        } else {
+          texts[currentIndex].text =
+              texts[currentIndex].text.replaceAll(' ', '\n');
+        }
       }
     });
   }
 
   removeText() {
     setState(() {
-      texts.removeAt(currentIndex);
+      if (texts.isNotEmpty) texts.removeAt(currentIndex);
     });
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
@@ -234,62 +527,62 @@ class _ImageMaker1State extends State<ImageMaker1> {
   bool isFollowing = false;
 
   final _controller = CircleColorPickerController();
-  void postImage(String uid, String username, String profilePic, String email,
-      String size, String font) async {
-    try {
-      setState(() {
-        isLoading = true;
-      });
-      await FirestoreMethods().uploadPost(
-        _textInputController.text.trim(),
-        _file!,
-        uid,
-        username,
-        profilePic,
-        email,
-      );
-      // if (res == 'success') {
-      //   showSnackBar(context, "success");
-      // } else {
-      //   showSnackBar(context, res);
-      // }
-      setState(() {
-        isLoading = false;
-        _file = null;
-        _textInputController.text = "";
-      });
-      CherryToast.success(
-        // icon: Icons.,
-        // themeColor: Color.fromARGB(255, 255, 255, 255),
-        title: Text("Posted....", style: TextStyle(color: Colors.black)),
-        toastPosition: Position.top,
+  // void postImage(String uid, String username, String profilePic, String email,
+  //     String size, String font) async {
+  //   try {
+  //     setState(() {
+  //       isLoading = true;
+  //     });
+  //     await FirestoreMethods().uploadPost(
+  //       _textInputController.text.trim(),
+  //       _file!,
+  //       uid,
+  //       username,
+  //       profilePic,
+  //       email,
+  //     );
+  //     // if (res == 'success') {
+  //     //   showSnackBar(context, "success");
+  //     // } else {
+  //     //   showSnackBar(context, res);
+  //     // }
+  //     setState(() {
+  //       isLoading = false;
+  //       _file = null;
+  //       _textInputController.text = "";
+  //     });
+  //     CherryToast.success(
+  //       // icon: Icons.,
+  //       // themeColor: Color.fromARGB(255, 255, 255, 255),
+  //       title: Text("Posted....", style: TextStyle(color: Colors.black)),
+  //       toastPosition: Position.top,
 
-        // autoDismiss:
-        //     false,
+  //       // autoDismiss:
+  //       //     false,
 
-        displayTitle: true,
-        displayCloseButton: true,
-        autoDismiss: true,
-        // animationCurve:
-        //     Cubic(
-        //         40.0,
-        //         20.0,
-        //         40.0,
-        //         20.0),
-        animationType: AnimationType.fromLeft,
-        displayIcon: true,
-        // iconColor: Colors.red,
-        // iconSize: 40,
-        layout: ToastLayout.ltr,
-        enableIconAnimation: true,
-        description: Text("Your Post is Posted....",
-            style: TextStyle(color: Colors.black)),
-        borderRadius: 40,
-      ).show(context);
-    } catch (e) {
-      showSnackBar(context, e.toString());
-    }
-  }
+  //       displayTitle: true,
+  //       displayCloseButton: true,
+  //       autoDismiss: true,
+  //       // animationCurve:
+  //       //     Cubic(
+  //       //         40.0,
+  //       //         20.0,
+  //       //         40.0,
+  //       //         20.0),
+  //       animationType: AnimationType.fromLeft,
+  //       displayIcon: true,
+  //       // iconColor: Colors.red,
+  //       // iconSize: 40,
+  //       layout: ToastLayout.ltr,
+  //       enableIconAnimation: true,
+  //       description: Text("Your Post is Posted....",
+  //           style: TextStyle(color: Colors.black)),
+  //       borderRadius: 40,
+  //     ).show(context);
+  //   } catch (e) {
+  //     showSnackBar(context, e.toString());
+  //   }
+  // }
 
   void factImage(
       String uid,
@@ -744,7 +1037,10 @@ class _ImageMaker1State extends State<ImageMaker1> {
                       left: texts[i].left,
                       top: texts[i].top,
                       child: GestureDetector(
-                        onTap: () => setCurrentIndex(context, i),
+                        onTap: () {
+                          setCurrentIndex(context, i);
+                          showSheet();
+                        },
                         child: Draggable(
                             child: ImageText(textInfo: texts[i]),
                             feedback: ImageText(textInfo: texts[i]),
@@ -946,6 +1242,29 @@ class _ImageMaker1State extends State<ImageMaker1> {
                       ),
                     ),
                   ),
+            InkWell(
+              borderRadius: BorderRadius.circular(20),
+              splashColor: Colors.transparent,
+              splashFactory: NoSplash.splashFactory,
+              highlightColor: Color.fromARGB(0, 255, 193, 7),
+              hoverColor: Color.fromARGB(0, 255, 193, 7),
+              onTap: () {
+                optionSelected = -1;
+                showSheet();
+              },
+              child: Text("Options"),
+            ),
+            SizedBox(
+                child: FutureBuilder<Fonts>(
+                    future: googleFont,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Container(child: Text(resp[index].toString()));
+                      } else if (snapshot.hasError) {
+                        return Text("${snapshot.error}");
+                      }
+                      return CircularProgressIndicator();
+                    })),
             Container(
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
@@ -1264,6 +1583,12 @@ class _ImageMaker1State extends State<ImageMaker1> {
                                                   Row(
                                                     children: [
                                                       IconButton(
+                                                          style: ButtonStyle(
+                                                            backgroundColor:
+                                                                MaterialStateProperty
+                                                                    .all(Colors
+                                                                        .white),
+                                                          ),
                                                           tooltip:
                                                               "Increase Text Size",
                                                           onPressed: () {
@@ -1272,6 +1597,12 @@ class _ImageMaker1State extends State<ImageMaker1> {
                                                           icon: Icon(Icons
                                                               .text_increase_rounded)),
                                                       IconButton(
+                                                          style: ButtonStyle(
+                                                            backgroundColor:
+                                                                MaterialStateProperty
+                                                                    .all(Colors
+                                                                        .white),
+                                                          ),
                                                           tooltip:
                                                               "Decrease Text Size",
                                                           onPressed: () {
@@ -1280,6 +1611,12 @@ class _ImageMaker1State extends State<ImageMaker1> {
                                                           icon: Icon(Icons
                                                               .text_decrease_rounded)),
                                                       IconButton(
+                                                          style: ButtonStyle(
+                                                            backgroundColor:
+                                                                MaterialStateProperty
+                                                                    .all(Colors
+                                                                        .white),
+                                                          ),
                                                           tooltip: "Align Left",
                                                           onPressed: () {
                                                             alignLeft();
@@ -1287,12 +1624,24 @@ class _ImageMaker1State extends State<ImageMaker1> {
                                                           icon: Icon(Icons
                                                               .align_horizontal_left_rounded)),
                                                       IconButton(
+                                                          style: ButtonStyle(
+                                                            backgroundColor:
+                                                                MaterialStateProperty
+                                                                    .all(Colors
+                                                                        .white),
+                                                          ),
                                                           tooltip:
                                                               "Align Center",
                                                           onPressed: () {},
                                                           icon: Icon(Icons
                                                               .align_horizontal_center_rounded)),
                                                       IconButton(
+                                                          style: ButtonStyle(
+                                                            backgroundColor:
+                                                                MaterialStateProperty
+                                                                    .all(Colors
+                                                                        .white),
+                                                          ),
                                                           tooltip:
                                                               "Align Right",
                                                           onPressed: () {
@@ -1301,6 +1650,12 @@ class _ImageMaker1State extends State<ImageMaker1> {
                                                           icon: Icon(Icons
                                                               .align_horizontal_right_rounded)),
                                                       IconButton(
+                                                          style: ButtonStyle(
+                                                            backgroundColor:
+                                                                MaterialStateProperty
+                                                                    .all(Colors
+                                                                        .white),
+                                                          ),
                                                           tooltip: "Bold",
                                                           onPressed: () {
                                                             boldText();
@@ -1308,6 +1663,12 @@ class _ImageMaker1State extends State<ImageMaker1> {
                                                           icon: Icon(Icons
                                                               .format_bold_rounded)),
                                                       IconButton(
+                                                          style: ButtonStyle(
+                                                            backgroundColor:
+                                                                MaterialStateProperty
+                                                                    .all(Colors
+                                                                        .white),
+                                                          ),
                                                           tooltip: "Italic",
                                                           onPressed: () {
                                                             italicText();
@@ -1315,6 +1676,12 @@ class _ImageMaker1State extends State<ImageMaker1> {
                                                           icon: Icon(Icons
                                                               .format_italic_rounded)),
                                                       IconButton(
+                                                          style: ButtonStyle(
+                                                            backgroundColor:
+                                                                MaterialStateProperty
+                                                                    .all(Colors
+                                                                        .white),
+                                                          ),
                                                           tooltip: "Delete",
                                                           onPressed: () {
                                                             removeText();
@@ -1322,6 +1689,12 @@ class _ImageMaker1State extends State<ImageMaker1> {
                                                           icon: Icon(Icons
                                                               .delete_rounded)),
                                                       IconButton(
+                                                          style: ButtonStyle(
+                                                            backgroundColor:
+                                                                MaterialStateProperty
+                                                                    .all(Colors
+                                                                        .white),
+                                                          ),
                                                           tooltip: "Save",
                                                           onPressed: () {
                                                             saveToGallery(
@@ -1330,6 +1703,12 @@ class _ImageMaker1State extends State<ImageMaker1> {
                                                           icon: Icon(Icons
                                                               .save_alt_rounded)),
                                                       IconButton(
+                                                          style: ButtonStyle(
+                                                            backgroundColor:
+                                                                MaterialStateProperty
+                                                                    .all(Colors
+                                                                        .white),
+                                                          ),
                                                           tooltip: "Format",
                                                           onPressed: () {
                                                             addLinesToText();

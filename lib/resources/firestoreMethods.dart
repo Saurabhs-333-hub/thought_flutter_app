@@ -15,7 +15,8 @@ class FirestoreMethods {
     String uid,
     String username,
     String profilePic,
-    String email,
+    String email, 
+    String tags,
   ) async {
     try {
       String pic =
@@ -31,6 +32,7 @@ class FirestoreMethods {
         likes: [],
         profilePic: profilePic,
         email: email,
+        tags:tags
       );
       await _firestore.collection('posts').doc(postId).set(post.toJson());
       String res = 'success';
@@ -82,16 +84,16 @@ class FirestoreMethods {
       //     await StorageMethod().uploadToStorage("factImage", file, true);
       String storyId = Uuid().v1();
       StoryModel story = StoryModel(
-          username: username,
-          uid: uid,
-          stories: stories,
-          storyId: storyId,
-          // factUrl: pic,
-          datePublished: DateTime.now().toString(),
-          likes: [],
-          profilePic: profilePic,
-          email: email,
-);
+        username: username,
+        uid: uid,
+        stories: stories,
+        storyId: storyId,
+        // factUrl: pic,
+        datePublished: DateTime.now().toString(),
+        likes: [],
+        profilePic: profilePic,
+        email: email,
+      );
       await _firestore.collection('stories').doc(storyId).set(story.toJson());
       String res = 'success';
     } catch (e) {
@@ -123,19 +125,19 @@ class FirestoreMethods {
 
       if (following.contains(followId)) {
         await _firestore.collection('users').doc(followId).update({
-          'followers': FieldValue.arrayRemove([uid])
+          'followers': FieldValue.arrayRemove([uid, uid.length])
         });
 
         await _firestore.collection('users').doc(uid).update({
-          'following': FieldValue.arrayRemove([followId])
+          'following': FieldValue.arrayRemove([followId, followId.length])
         });
       } else {
         await _firestore.collection('users').doc(followId).update({
-          'followers': FieldValue.arrayUnion([uid])
+          'followers': FieldValue.arrayUnion([uid, uid.length])
         });
 
         await _firestore.collection('users').doc(uid).update({
-          'following': FieldValue.arrayUnion([followId])
+          'following': FieldValue.arrayUnion([followId, followId.length])
         });
       }
     } catch (e) {

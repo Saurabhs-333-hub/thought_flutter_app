@@ -77,18 +77,21 @@ class _UploadPostState extends State<UploadPost> {
         });
   }
 
-  void postImage(
-    String uid,
-    String username,
-    String profilePic,
-    String email,
-  ) async {
+  TextEditingController textEditingController = TextEditingController();
+  void postImage(String uid, String username, String profilePic, String email,
+      String tags) async {
     try {
       setState(() {
         isLoading = true;
       });
-      await FirestoreMethods().uploadPost(_textInputController.text.trim(),
-          _file!, uid, username, profilePic, email);
+      await FirestoreMethods().uploadPost(
+          _textInputController.text.trim(),
+          _file!,
+          uid,
+          username,
+          profilePic,
+          email,
+          textEditingController.text.trim());
       // if (res == 'success') {
       //   showSnackBar(context, "success");
       // } else {
@@ -137,80 +140,82 @@ class _UploadPostState extends State<UploadPost> {
     final UserModel? user = Provider.of<UserProvider>(context).getUser;
     return SafeArea(
       child: Scaffold(
-        body: Column(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: Color.fromARGB(66, 56, 56, 56)),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: InkWell(
-                  splashColor: Colors.transparent,
-                  splashFactory: NoSplash.splashFactory,
-                  highlightColor: Color.fromARGB(0, 255, 193, 7),
-                  hoverColor: Color.fromARGB(0, 255, 193, 7),
-                  onTap: () {
-                    _selectImage(context);
-                  },
-                  child: isLoading == true
-                      ? CircularProgressIndicator()
-                      : Text("Choose Image"),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: Color.fromARGB(66, 56, 56, 56)),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: InkWell(
+                    splashColor: Colors.transparent,
+                    splashFactory: NoSplash.splashFactory,
+                    highlightColor: Color.fromARGB(0, 255, 193, 7),
+                    hoverColor: Color.fromARGB(0, 255, 193, 7),
+                    onTap: () {
+                      _selectImage(context);
+                    },
+                    child: isLoading == true
+                        ? CircularProgressIndicator()
+                        : Text("Choose Image"),
+                  ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 600,
-              child: _file != null
-                  ? ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Container(
-                        height: MediaQuery.of(context).size.height / 2,
-                        width: MediaQuery.of(context).size.width / 1,
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: MemoryImage(_file!), fit: BoxFit.cover)),
+              SizedBox(
+                height: 600,
+                child: _file != null
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Container(
+                          height: MediaQuery.of(context).size.height / 2,
+                          width: MediaQuery.of(context).size.width / 1,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: MemoryImage(_file!),
+                                  fit: BoxFit.cover)),
+                        ),
+                      )
+                    : ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Container(
+                          height: MediaQuery.of(context).size.height / 1.8,
+                          width: MediaQuery.of(context).size.width / 1.2,
+                          decoration: BoxDecoration(
+                              gradient: _color1 == null || _color2 == null
+                                  ? LinearGradient(
+                                      colors: [Colors.black, Colors.black])
+                                  : LinearGradient(colors: [_color1, _color2])),
+                        ),
                       ),
-                    )
-                  : ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Container(
-                        height: MediaQuery.of(context).size.height / 1.8,
-                        width: MediaQuery.of(context).size.width / 1.2,
-                        decoration: BoxDecoration(
-                            gradient: _color1 == null || _color2 == null
-                                ? LinearGradient(
-                                    colors: [Colors.black, Colors.black])
-                                : LinearGradient(colors: [_color1, _color2])),
-                      ),
-                    ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: Color.fromARGB(66, 56, 56, 56)),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: InkWell(
-                  splashColor: Colors.transparent,
-                  splashFactory: NoSplash.splashFactory,
-                  highlightColor: Color.fromARGB(0, 255, 193, 7),
-                  hoverColor: Color.fromARGB(0, 255, 193, 7),
-                  onTap: () {
-                    postImage(
-                      user!.uid,
-                      user.username,
-                      user.profilePic,
-                      user.email,
-                    );
-                  },
-                  child: isLoading == true
-                      ? CircularProgressIndicator()
-                      : Text("Upload Post"),
+              ),
+              TextField(
+                controller: textEditingController,
+              ),
+              Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: Color.fromARGB(66, 56, 56, 56)),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: InkWell(
+                    splashColor: Colors.transparent,
+                    splashFactory: NoSplash.splashFactory,
+                    highlightColor: Color.fromARGB(0, 255, 193, 7),
+                    hoverColor: Color.fromARGB(0, 255, 193, 7),
+                    onTap: () {
+                      postImage(user!.uid, user.username, user.profilePic,
+                          user.email, textEditingController.text.trim());
+                    },
+                    child: isLoading == true
+                        ? CircularProgressIndicator()
+                        : Text("Upload Post"),
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

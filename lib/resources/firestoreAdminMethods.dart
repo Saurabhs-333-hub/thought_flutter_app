@@ -44,4 +44,23 @@ class FirestoreAdminMethods {
       print(e.toString());
     }
   }
+
+  List values1 = [];
+  Future<void> readLoacationData() async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc('2utCPTr9wJhB8V6bJ3CnigqFwt03')
+        .get()
+        .then((value) {
+      List<String> values = List.from((value.data() as dynamic)['followers']);
+      values1.add(values.every((element) => true));
+      return values;
+    });
+    print(values1);
+// query.
+
+    // print(values);
+
+    // query.snapshots().
+  }
 }

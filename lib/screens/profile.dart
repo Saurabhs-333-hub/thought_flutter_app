@@ -56,9 +56,82 @@ class _ProfileState extends State<Profile> {
             // isLoading = false;
           })
         : getData();
+    readLoacationData();
+    readLoacationData1();
     // getData();
   }
 
+  var str;
+  List value1 = [];
+  List values1 = [];
+  readLoacationData() async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc('QGB0kPKhUygzD61irohdquifaCt2')
+        .get()
+        .then((value) {
+      List<String> values = List.from((value.data() as dynamic)['followers']);
+      setState(() {
+        // values1.add(values);
+        values.forEach((element) {
+          values1.add(element);
+          str = element;
+          value1.add(str);
+          print(value1);
+          setState(() {
+            // value1.add(str);
+            values1.add(element);
+          });
+        });
+        // print(value1);
+        setState(() {});
+      });
+      setState(() {});
+      return value1;
+    });
+    return values1;
+  }
+
+  var str1;
+  List value11 = [];
+  List values11 = [];
+  readLoacationData1() async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc('QGB0kPKhUygzD61irohdquifaCt2')
+        .get()
+        .then((value) {
+      List<String> values = List.from((value.data() as dynamic)['following']);
+      setState(() {
+        // values1.add(values);
+        values.forEach((element) {
+          values11.add(element);
+          str1 = element;
+          value11.add(str1);
+          print(value11);
+          setState(() {
+            // value1.add(str);
+            values11.add(element);
+          });
+        });
+        // print(value1);
+        setState(() {});
+      });
+      setState(() {});
+      return value11;
+    });
+    return values11;
+  }
+
+  // getData() async {
+  //   // List any = [];
+  //   // setState(() {
+  //   //   // print(value1.toString());
+  //   //   // return await values1.length;
+  //   // });
+  //   print(str);
+  //   print(value1);
+  // }
   void refresh(bool newrefresh) {
     setState(() {
       isrefreshing = newrefresh;
@@ -174,7 +247,20 @@ class _ProfileState extends State<Profile> {
                                                 BorderRadius.circular(20)),
                                       ),
                                     )
-                                  : buildStatColumn(followers, "followers"),
+                                  : InkWell(
+                                      onTap: () => showModalBottomSheet(
+                                          context: context,
+                                          builder: (context) {
+                                            return ListView.builder(
+                                                itemCount: value1.length,
+                                                itemBuilder: (context, index) =>
+                                                    ListTile(
+                                                      title:
+                                                          Text(value1[index]),
+                                                    ));
+                                          }),
+                                      child: buildStatColumn(
+                                          followers, "followers")),
                               SizedBox(
                                 width: 8,
                               ),
@@ -282,7 +368,9 @@ class _ProfileState extends State<Profile> {
                             onPressed: () {
                               Navigator.of(context)
                                   .push(CupertinoPageRoute(builder: (context) {
-                                return UploadQuoteSuggestions(uid: widget.uid,);
+                                return UploadQuoteSuggestions(
+                                  uid: widget.uid,
+                                );
                               }));
                             },
                             icon: Icon(CupertinoIcons.add_circled_solid))

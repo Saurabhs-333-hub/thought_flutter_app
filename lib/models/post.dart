@@ -11,7 +11,7 @@ class PostModel {
   // final List datePublished;
   final String profilePic;
   final likes;
-  
+  final String tags;
 
   PostModel({
     required this.username,
@@ -22,7 +22,7 @@ class PostModel {
     required this.datePublished,
     required this.likes,
     required this.profilePic,
-    required this.email,
+    required this.email, required this.tags,
     
   });
 
@@ -37,7 +37,7 @@ class PostModel {
         'likes': likes,
         'datePublished': datePublished,
         'email': email,
-        
+        'tags':tags
       };
 
   static PostModel fromSnap(DocumentSnapshot snap) {
@@ -52,7 +52,7 @@ class PostModel {
       profilePic: snapshot['profilePic'],
       likes: snapshot['likes'],
       email: snapshot['email'],
-      
+      tags:snapshot['tags']
     );
   }
 }

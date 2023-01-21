@@ -46,8 +46,14 @@ class _AddStoriesState extends State<AddStories> {
       setState(() {
         isLoading = true;
       });
-      await FirestoreMethods().uploadPost(_textInputController.text.trim(),
-          _file!, uid, username, profilePic, email, );
+      await FirestoreMethods().uploadPost(
+          _textInputController.text.trim(),
+          _file!,
+          uid,
+          username,
+          profilePic,
+          email,
+          _textInputController.text.trim());
       // if (res == 'success') {
       //   showSnackBar(context, "success");
       // } else {
@@ -92,23 +98,23 @@ class _AddStoriesState extends State<AddStories> {
   }
 
   void factImage(
-      String uid,
-      String username,
-      String profilePic,
-      String email,
-) async {
+    String uid,
+    String username,
+    String profilePic,
+    String email,
+  ) async {
     try {
       setState(() {
         isLoading = true;
       });
       await FirestoreMethods().uploadFact(
-          _textInputController.text.trim(),
-          _file!,
-          uid,
-          username,
-          profilePic,
-          email,
-          );
+        _textInputController.text.trim(),
+        _file!,
+        uid,
+        username,
+        profilePic,
+        email,
+      );
       // if (res == 'success') {
       //   showSnackBar(context, "success");
       // } else {
@@ -132,13 +138,13 @@ class _AddStoriesState extends State<AddStories> {
         isLoading = true;
       });
       await FirestoreMethods().uploadStory(
-          _textInputController.text.trim(),
-          // _file!,
-          uid,
-          username,
-          profilePic,
-          email,
-);
+        _textInputController.text.trim(),
+        // _file!,
+        uid,
+        username,
+        profilePic,
+        email,
+      );
       // if (res == 'success') {
       //   showSnackBar(context, "success");
       // } else {

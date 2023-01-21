@@ -64,6 +64,9 @@ dependencies:
   permission_handler: ^10.2.0
   progressive_image: ^2.0.0
   image_cropper: ^1.5.1
+  shared_preferences: ^2.0.16
+  http: ^0.13.5
+  flutter_zoom_drawer: ^3.0.3
 
 dev_dependencies:
   flutter_test:

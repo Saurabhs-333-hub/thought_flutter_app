@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:provider/provider.dart';
 import 'package:thought/models/user.dart' as model;
 import 'package:thought/providers/userProvider.dart';
@@ -13,6 +14,7 @@ import 'package:thought/screens/explorer.dart';
 import 'package:thought/screens/profile.dart';
 import 'package:thought/screens/stories.dart';
 import 'package:thought/screens/thoughts.dart';
+import 'package:thought/screens/zoomDrawer.dart';
 import 'package:thought/utils/colors.dart';
 import 'package:thought/widgets/squarePage.dart';
 
@@ -99,7 +101,8 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
           controller: _pageController,
           onPageChanged: onPageChanged,
           children: [
-            Thoughts(),
+            FlutterZoomDrawerDemo(),
+            // Thoughts(),
             Explorer(),
             // AddStories(),
             ImageMaker1(),
